@@ -14,6 +14,8 @@ import {
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { UserMenu } from "@/components/user-menu";
+
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
@@ -63,8 +65,10 @@ function Dashboard() {
       <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur">
         <SidebarTrigger />
         <Separator orientation="vertical" className="h-5" />
-        <h1 className="text-sm font-semibold">Dashboard</h1>
+        <h1 className="flex-1 text-sm font-semibold">Dashboard</h1>
+        <UserMenu />
       </header>
+
 
       <main className="flex-1 p-4 md:p-8">
         <section className="mx-auto max-w-6xl">

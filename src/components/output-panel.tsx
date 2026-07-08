@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Copy, Pin, PinOff, Trash2, Save, Wand2 } from "lucide-react";
+import { Copy, Pin, PinOff, Trash2, Save, Wand2, Cloud, CloudOff } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
@@ -14,8 +14,9 @@ import {
   outputsForTool,
   saveOutput,
   togglePin,
-  updateOutput,
 } from "@/lib/storage";
+import { useAuth } from "@/lib/auth-context";
+import { AuthModal } from "@/components/auth-modal";
 
 type Props = {
   tool: ToolKey;
@@ -35,22 +36,31 @@ export function OutputPanel({
   onLoadHistory,
 }: Props) {
   const [history, setHistory] = useState<SavedOutput[]>([]);
+  const [authOpen, setAuthOpen] = useState(false);
+  const { user } = useAuth();
+
+  const refresh = () => {
+    outputsForTool(tool).then(setHistory).catch(() => setHistory([]));
+  };
 
   useEffect(() => {
-    setHistory(outputsForTool(tool));
-  }, [tool]);
-
-  const refresh = () => setHistory(outputsForTool(tool));
-
-  const handleSave = () => {
-    if (!output.trim()) return;
-    saveOutput({
-      tool,
-      title: suggestedTitle?.trim() || output.slice(0, 60),
-      content: output,
-    });
     refresh();
-    toast.success("Saved to history");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tool, user?.id]);
+
+  const handleSave = async () => {
+    if (!output.trim()) return;
+    try {
+      await saveOutput({
+        tool,
+        title: suggestedTitle?.trim() || output.slice(0, 60),
+        content: output,
+      });
+      refresh();
+      toast.success(user ? "Saved & synced" : "Saved on this device");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Save failed");
+    }
   };
 
   const handleCopy = async () => {
@@ -73,7 +83,7 @@ export function OutputPanel({
             <Copy className="mr-1 h-3.5 w-3.5" /> Copy
           </Button>
           <Button size="sm" variant="ghost" onClick={handleCopyForget} disabled={!output}>
-            <Wand2 className="mr-1 h-3.5 w-3.5" /> Copy & forget
+            <Wand2 className="mr-1 h-3.5 w-3.5" /> Copy &amp; forget
           </Button>
           <Button size="sm" variant="default" onClick={handleSave} disabled={!output}>
             <Save className="mr-1 h-3.5 w-3.5" /> Save
@@ -107,16 +117,40 @@ export function OutputPanel({
             </div>
           </TabsContent>
           <TabsContent value="history">
+            <div className="mb-3 flex items-center justify-between gap-2 rounded-md border border-primary/20 bg-primary/5 px-3 py-2 text-xs">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                {user ? (
+                  <>
+                    <Cloud className="h-3.5 w-3.5 text-primary" />
+                    <span>Synced to your account</span>
+                  </>
+                ) : (
+                  <>
+                    <CloudOff className="h-3.5 w-3.5" />
+                    <span>Stored on this device only</span>
+                  </>
+                )}
+              </div>
+              {!user && (
+                <button
+                  type="button"
+                  onClick={() => setAuthOpen(true)}
+                  className="font-medium text-primary hover:underline"
+                >
+                  Sign in to sync
+                </button>
+              )}
+            </div>
             {history.length === 0 ? (
               <p className="py-8 text-center text-sm text-muted-foreground">
-                No saved outputs yet. Outputs live only on this device.
+                No saved outputs yet.
               </p>
             ) : (
               <ul className="space-y-2">
                 {history.map((item) => (
                   <li
                     key={item.id}
-                    className="group rounded-lg border bg-card p-3 transition-colors hover:bg-accent/40"
+                    className="group rounded-lg border bg-card p-3 transition-colors hover:border-primary/40 hover:bg-accent/40"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <button
@@ -137,8 +171,8 @@ export function OutputPanel({
                           size="icon"
                           variant="ghost"
                           className="h-7 w-7"
-                          onClick={() => {
-                            togglePin(item.id);
+                          onClick={async () => {
+                            await togglePin(item.id);
                             refresh();
                           }}
                         >
@@ -152,8 +186,8 @@ export function OutputPanel({
                           size="icon"
                           variant="ghost"
                           className="h-7 w-7 text-destructive"
-                          onClick={() => {
-                            deleteOutput(item.id);
+                          onClick={async () => {
+                            await deleteOutput(item.id);
                             refresh();
                           }}
                         >
@@ -162,7 +196,7 @@ export function OutputPanel({
                       </div>
                     </div>
                     {item.pinned && (
-                      <span className="mt-2 inline-block rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium text-primary">
+                      <span className="mt-2 inline-block rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
                         Pinned
                       </span>
                     )}
@@ -171,8 +205,9 @@ export function OutputPanel({
               </ul>
             )}
             <p className="mt-4 text-[11px] text-muted-foreground">
-              Outputs are saved only on this device. Last {20} kept per tool.
+              Last {20} kept per tool. Data never leaves your browser unless you sign in.
             </p>
+            <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
           </TabsContent>
         </Tabs>
       </CardContent>

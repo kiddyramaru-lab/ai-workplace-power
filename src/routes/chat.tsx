@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { UserMenu } from "@/components/user-menu";
+
 import { aiChat } from "@/lib/ai.functions";
 import {
   type ChatMessage,
@@ -36,22 +38,24 @@ function ChatPage() {
 
   // Bootstrap once on mount
   useEffect(() => {
-    const existing = loadThreads();
-    if (existing.length === 0) {
-      const t: ChatThread = {
-        id: crypto.randomUUID(),
-        title: "New chat",
-        messages: [],
-        updatedAt: Date.now(),
-      };
-      upsertThread(t);
-      setThreads([t]);
-      setActiveId(t.id);
-    } else {
-      setThreads(existing);
-      setActiveId(existing[0].id);
-    }
+    loadThreads().then((existing) => {
+      if (existing.length === 0) {
+        const t: ChatThread = {
+          id: crypto.randomUUID(),
+          title: "New chat",
+          messages: [],
+          updatedAt: Date.now(),
+        };
+        upsertThread(t);
+        setThreads([t]);
+        setActiveId(t.id);
+      } else {
+        setThreads(existing);
+        setActiveId(existing[0].id);
+      }
+    });
   }, []);
+
 
   const active = threads.find((t) => t.id === activeId) ?? null;
 
@@ -144,8 +148,8 @@ function ChatPage() {
       <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur">
         <SidebarTrigger />
         <Separator orientation="vertical" className="h-5" />
-        <div className="flex min-w-0 items-center gap-2">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/15 text-primary">
             <MessageSquare className="h-4 w-4" />
           </div>
           <div className="min-w-0">
@@ -155,6 +159,8 @@ function ChatPage() {
             </p>
           </div>
         </div>
+        <UserMenu />
+
       </header>
 
       <div className="grid flex-1 grid-cols-1 overflow-hidden md:grid-cols-[260px_1fr]">

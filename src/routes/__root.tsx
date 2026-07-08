@@ -14,6 +14,8 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/lib/auth-context";
+
 
 function NotFoundComponent() {
   return (
@@ -109,7 +111,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
@@ -126,13 +128,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <Outlet />
-        </SidebarInset>
-      </SidebarProvider>
-      <Toaster position="bottom-right" richColors />
+      <AuthProvider>
+        <SidebarProvider>
+          <AppSidebar />
+          <SidebarInset>
+            <Outlet />
+          </SidebarInset>
+        </SidebarProvider>
+        <Toaster position="bottom-right" richColors theme="dark" />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
+
