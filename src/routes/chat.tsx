@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { UserMenu } from "@/components/user-menu";
+
 import { aiChat } from "@/lib/ai.functions";
 import {
   type ChatMessage,
