@@ -36,22 +36,24 @@ function ChatPage() {
 
   // Bootstrap once on mount
   useEffect(() => {
-    const existing = loadThreads();
-    if (existing.length === 0) {
-      const t: ChatThread = {
-        id: crypto.randomUUID(),
-        title: "New chat",
-        messages: [],
-        updatedAt: Date.now(),
-      };
-      upsertThread(t);
-      setThreads([t]);
-      setActiveId(t.id);
-    } else {
-      setThreads(existing);
-      setActiveId(existing[0].id);
-    }
+    loadThreads().then((existing) => {
+      if (existing.length === 0) {
+        const t: ChatThread = {
+          id: crypto.randomUUID(),
+          title: "New chat",
+          messages: [],
+          updatedAt: Date.now(),
+        };
+        upsertThread(t);
+        setThreads([t]);
+        setActiveId(t.id);
+      } else {
+        setThreads(existing);
+        setActiveId(existing[0].id);
+      }
+    });
   }, []);
+
 
   const active = threads.find((t) => t.id === activeId) ?? null;
 
