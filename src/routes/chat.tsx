@@ -146,8 +146,8 @@ function ChatPage() {
       <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur">
         <SidebarTrigger />
         <Separator orientation="vertical" className="h-5" />
-        <div className="flex min-w-0 items-center gap-2">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/15 text-primary">
             <MessageSquare className="h-4 w-4" />
           </div>
           <div className="min-w-0">
@@ -157,6 +157,8 @@ function ChatPage() {
             </p>
           </div>
         </div>
+        <UserMenu />
+
       </header>
 
       <div className="grid flex-1 grid-cols-1 overflow-hidden md:grid-cols-[260px_1fr]">
