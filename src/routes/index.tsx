@@ -14,6 +14,8 @@ import {
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { UserMenu } from "@/components/user-menu";
+
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
