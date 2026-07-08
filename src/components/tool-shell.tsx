@@ -2,6 +2,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { AlertTriangle } from "lucide-react";
 import type { ReactNode } from "react";
+import { UserMenu } from "@/components/user-menu";
 
 export function ToolShell({
   title,
@@ -19,8 +20,8 @@ export function ToolShell({
       <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-background/80 px-4 backdrop-blur">
         <SidebarTrigger />
         <Separator orientation="vertical" className="h-5" />
-        <div className="flex min-w-0 items-center gap-2">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-primary/15 text-primary">
             {icon}
           </div>
           <div className="min-w-0">
@@ -28,6 +29,7 @@ export function ToolShell({
             <p className="truncate text-xs text-muted-foreground">{description}</p>
           </div>
         </div>
+        <UserMenu />
       </header>
       <main className="flex-1 p-4 md:p-6 lg:p-8">{children}</main>
       <footer className="border-t bg-muted/30 px-4 py-3">
