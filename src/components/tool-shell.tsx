@@ -2,7 +2,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { AlertTriangle } from "lucide-react";
 import type { ReactNode } from "react";
-import { UserMenu } from "@/components/user-menu";
+
 
 export function ToolShell({
   title,
@@ -29,7 +29,7 @@ export function ToolShell({
             <p className="truncate text-xs text-muted-foreground">{description}</p>
           </div>
         </div>
-        <UserMenu />
+        
       </header>
       <main className="flex-1 p-4 md:p-6 lg:p-8">{children}</main>
       <footer className="border-t bg-muted/30 px-4 py-3">
