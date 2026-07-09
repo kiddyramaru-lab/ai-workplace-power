@@ -184,9 +184,9 @@ export function OutputPanel({
               </ul>
             )}
             <p className="mt-4 text-[11px] text-muted-foreground">
-              Last {20} kept per tool. Data never leaves your browser unless you sign in.
+              Last {20} kept per tool. Data never leaves your browser.
             </p>
-            <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
+
           </TabsContent>
         </Tabs>
       </CardContent>
