@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { toast } from "sonner";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, Sparkles, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -8,6 +8,7 @@ import { ToolShell } from "@/components/tool-shell";
 import { OutputPanel } from "@/components/output-panel";
 import { aiChat } from "@/lib/ai.functions";
 import type { ToolKey } from "@/lib/storage";
+
 
 export type ToolPageProps = {
   tool: ToolKey;
@@ -76,11 +77,27 @@ export function ToolPage({
     <ToolShell title={title} description={description} icon={icon}>
       <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
         <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Inputs</CardTitle>
-            <CardDescription>
-              Fill in the details. Structured prompts produce sharper outputs.
-            </CardDescription>
+          <CardHeader className="flex flex-row items-start justify-between gap-2 space-y-0">
+            <div className="space-y-1.5">
+              <CardTitle className="text-base">Inputs</CardTitle>
+              <CardDescription>
+                Fill in the details. Structured prompts produce sharper outputs.
+              </CardDescription>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 shrink-0 text-primary hover:bg-primary/10 hover:text-primary"
+              onClick={() => {
+                setState(defaultState);
+                setOutput("");
+                toast.success("Cleared");
+              }}
+              title="Clear inputs and output"
+              aria-label="Clear inputs and output"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
           </CardHeader>
           <CardContent className="space-y-4">
             {renderForm({ state, setField })}
@@ -97,6 +114,7 @@ export function ToolPage({
             </Button>
           </CardContent>
         </Card>
+
 
         <OutputPanel
           tool={tool}
