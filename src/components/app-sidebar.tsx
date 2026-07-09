@@ -7,6 +7,7 @@ import {
   Search,
   MessageSquare,
   Sparkles,
+  HelpCircle,
 } from "lucide-react";
 
 import {
@@ -21,6 +22,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { HelpDialog } from "@/components/help-dialog";
 
 const items = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -73,6 +75,18 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <HelpDialog
+              trigger={
+                <SidebarMenuButton tooltip="Help" className="text-primary hover:text-primary">
+                  <HelpCircle className="h-4 w-4" />
+                  <span>Help</span>
+                </SidebarMenuButton>
+              }
+            />
+          </SidebarMenuItem>
+        </SidebarMenu>
         <div className="px-2 py-2 text-[11px] leading-snug text-muted-foreground group-data-[collapsible=icon]:hidden">
           AI outputs can be inaccurate. Review before sending or sharing.
         </div>
