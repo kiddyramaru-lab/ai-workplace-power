@@ -93,10 +93,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Draft emails, summarize meetings, plan tasks, and research faster with a modern AI workspace.",
+          "AI-powered workspace: draft emails, summarize meetings, plan tasks, research topics, and chat with an assistant. Local-first, review before you send.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Workplace AI — Productivity Assistant" },
+      { name: "twitter:description", content: "AI-powered workspace: draft emails, summarize meetings, plan tasks, research topics, and chat with an assistant. Local-first, review before you send." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e12731c3-9f23-483b-a9fc-ba66a2805d64/id-preview-7a91cc8a--76d75813-38a6-44a5-8cb8-11d459f3a4d9.lovable.app-1783601846250.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e12731c3-9f23-483b-a9fc-ba66a2805d64/id-preview-7a91cc8a--76d75813-38a6-44a5-8cb8-11d459f3a4d9.lovable.app-1783601846250.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
