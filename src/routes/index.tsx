@@ -14,7 +14,7 @@ import {
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { UserMenu } from "@/components/user-menu";
+
 
 
 export const Route = createFileRoute("/")({
@@ -66,7 +66,7 @@ function Dashboard() {
         <SidebarTrigger />
         <Separator orientation="vertical" className="h-5" />
         <h1 className="flex-1 text-sm font-semibold">Dashboard</h1>
-        <UserMenu />
+        
       </header>
 
 

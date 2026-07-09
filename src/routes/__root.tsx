@@ -14,7 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Toaster } from "@/components/ui/sonner";
-import { AuthProvider } from "@/lib/auth-context";
+
 
 
 function NotFoundComponent() {
@@ -128,16 +128,15 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <SidebarProvider>
-          <AppSidebar />
-          <SidebarInset>
-            <Outlet />
-          </SidebarInset>
-        </SidebarProvider>
-        <Toaster position="bottom-right" richColors theme="dark" />
-      </AuthProvider>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <Outlet />
+        </SidebarInset>
+      </SidebarProvider>
+      <Toaster position="bottom-right" richColors theme="dark" />
     </QueryClientProvider>
+
   );
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Copy, Pin, PinOff, Trash2, Save, Wand2, Cloud, CloudOff } from "lucide-react";
+import { Copy, Pin, PinOff, Trash2, Save, Wand2, CloudOff } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
 import { Button } from "@/components/ui/button";
@@ -15,8 +15,7 @@ import {
   saveOutput,
   togglePin,
 } from "@/lib/storage";
-import { useAuth } from "@/lib/auth-context";
-import { AuthModal } from "@/components/auth-modal";
+
 
 type Props = {
   tool: ToolKey;
@@ -36,8 +35,6 @@ export function OutputPanel({
   onLoadHistory,
 }: Props) {
   const [history, setHistory] = useState<SavedOutput[]>([]);
-  const [authOpen, setAuthOpen] = useState(false);
-  const { user } = useAuth();
 
   const refresh = () => {
     outputsForTool(tool).then(setHistory).catch(() => setHistory([]));
@@ -46,7 +43,7 @@ export function OutputPanel({
   useEffect(() => {
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tool, user?.id]);
+  }, [tool]);
 
   const handleSave = async () => {
     if (!output.trim()) return;
@@ -57,11 +54,12 @@ export function OutputPanel({
         content: output,
       });
       refresh();
-      toast.success(user ? "Saved & synced" : "Saved on this device");
+      toast.success("Saved on this device");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Save failed");
     }
   };
+
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(output);
@@ -117,30 +115,11 @@ export function OutputPanel({
             </div>
           </TabsContent>
           <TabsContent value="history">
-            <div className="mb-3 flex items-center justify-between gap-2 rounded-md border border-primary/20 bg-primary/5 px-3 py-2 text-xs">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                {user ? (
-                  <>
-                    <Cloud className="h-3.5 w-3.5 text-primary" />
-                    <span>Synced to your account</span>
-                  </>
-                ) : (
-                  <>
-                    <CloudOff className="h-3.5 w-3.5" />
-                    <span>Stored on this device only</span>
-                  </>
-                )}
-              </div>
-              {!user && (
-                <button
-                  type="button"
-                  onClick={() => setAuthOpen(true)}
-                  className="font-medium text-primary hover:underline"
-                >
-                  Sign in to sync
-                </button>
-              )}
+            <div className="mb-3 flex items-center gap-2 rounded-md border border-primary/20 bg-primary/5 px-3 py-2 text-xs text-muted-foreground">
+              <CloudOff className="h-3.5 w-3.5" />
+              <span>Stored on this device only</span>
             </div>
+
             {history.length === 0 ? (
               <p className="py-8 text-center text-sm text-muted-foreground">
                 No saved outputs yet.
@@ -205,9 +184,9 @@ export function OutputPanel({
               </ul>
             )}
             <p className="mt-4 text-[11px] text-muted-foreground">
-              Last {20} kept per tool. Data never leaves your browser unless you sign in.
+              Last {20} kept per tool. Data never leaves your browser.
             </p>
-            <AuthModal open={authOpen} onOpenChange={setAuthOpen} />
+
           </TabsContent>
         </Tabs>
       </CardContent>
