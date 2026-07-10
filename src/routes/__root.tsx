@@ -82,14 +82,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Workplace AI — Productivity Assistant" },
+      { title: "Workmate AI — Productivity Assistant" },
       {
         name: "description",
         content:
           "AI-powered workspace: draft emails, summarize meetings, plan tasks, research topics, and chat with an assistant. Local-first, review before you send.",
       },
-      { name: "author", content: "Workplace AI" },
-      { property: "og:title", content: "Workplace AI — Productivity Assistant" },
+      { name: "author", content: "Workmate AI" },
+      { property: "og:title", content: "Workmate AI — Productivity Assistant" },
       {
         property: "og:description",
         content:
@@ -97,14 +97,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Workplace AI — Productivity Assistant" },
+      { name: "twitter:title", content: "Workmate AI — Productivity Assistant" },
       { name: "twitter:description", content: "AI-powered workspace: draft emails, summarize meetings, plan tasks, research topics, and chat with an assistant. Local-first, review before you send." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e12731c3-9f23-483b-a9fc-ba66a2805d64/id-preview-7a91cc8a--76d75813-38a6-44a5-8cb8-11d459f3a4d9.lovable.app-1783601846250.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e12731c3-9f23-483b-a9fc-ba66a2805d64/id-preview-7a91cc8a--76d75813-38a6-44a5-8cb8-11d459f3a4d9.lovable.app-1783601846250.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
     ],
   }),
   shellComponent: RootShell,

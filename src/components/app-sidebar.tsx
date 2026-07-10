@@ -6,7 +6,6 @@ import {
   ListTodo,
   Search,
   MessageSquare,
-  Sparkles,
   HelpCircle,
 } from "lucide-react";
 
@@ -23,6 +22,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { HelpDialog } from "@/components/help-dialog";
+import workmateLogo from "@/assets/workmate-logo.png.asset.json";
 
 const items = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -40,11 +40,11 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/60 text-primary-foreground shadow-sm">
-            <Sparkles className="h-5 w-5" />
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-background">
+            <img src={workmateLogo.url} alt="Workmate AI logo" className="h-full w-full object-contain" />
           </div>
           <div className="flex min-w-0 flex-col leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="truncate text-sm font-semibold">Workplace AI</span>
+            <span className="truncate text-sm font-semibold">Workmate AI</span>
             <span className="truncate text-xs text-muted-foreground">Productivity Suite</span>
           </div>
         </div>

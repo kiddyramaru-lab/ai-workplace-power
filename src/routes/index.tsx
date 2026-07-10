@@ -74,7 +74,7 @@ function Dashboard() {
         <section className="mx-auto max-w-6xl">
           <div className="mb-8 flex flex-col gap-3 rounded-2xl border bg-gradient-to-br from-primary/10 via-background to-background p-6 md:p-10">
             <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-primary">
-              <Sparkles className="h-3.5 w-3.5" /> Workplace AI
+              <Sparkles className="h-3.5 w-3.5" /> Workmate AI
             </div>
             <h2 className="text-2xl font-bold tracking-tight md:text-4xl">
               Your AI-powered productivity workspace
