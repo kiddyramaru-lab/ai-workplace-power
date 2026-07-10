@@ -6,7 +6,6 @@ import {
   ListTodo,
   Search,
   MessageSquare,
-  Sparkles,
   HelpCircle,
 } from "lucide-react";
 
