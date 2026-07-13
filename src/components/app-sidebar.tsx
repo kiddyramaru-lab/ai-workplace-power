@@ -23,6 +23,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { HelpDialog } from "@/components/help-dialog";
+import { SettingsDialog } from "@/components/settings-dialog";
 import workmateLogo from "@/assets/workmate-logo.png.asset.json";
 
 const items = [
