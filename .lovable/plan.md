@@ -1,45 +1,37 @@
-## Changes
+## Add Settings modal with Light/Dark theme toggle
 
-### 1. Sidebar – Help entry
-- Add a "Help" button to `src/components/app-sidebar.tsx` in `SidebarFooter` (visible in both expanded and icon-collapsed states, with tooltip).
-- New `src/components/help-dialog.tsx`: shadcn `Dialog` styled with the black/pink theme. Contents:
-  - Title "How can we help?"
-  - Short intro of the tools (Email Generator, Chatbot, Output History).
-  - Step-by-step tips ("Type your prompt → Generate → Copy or Edit").
-  - Privacy reminder about local-first storage.
-  - "Got it" close button (pink primary).
-- Wire open state in the sidebar via `useState`.
+### 1. Theme context (`src/lib/theme-context.tsx` — new)
+- `ThemeProvider` with `theme: "light" | "dark"`, `setTheme`, `toggleTheme`.
+- Reads `localStorage.getItem("theme")` on mount; defaults to `"dark"`.
+- Applies by toggling the `dark` class on `document.documentElement` and persisting to localStorage.
+- Export `useTheme()` hook.
 
-### 2. Smart Email Generator – Clear button
-- Extend `src/components/tool-page.tsx` with an optional reset affordance: add a pink-accented `Trash2` icon button in the Inputs card header that resets form state to `defaultState` AND clears the current `output`.
-- Show a small confirmation toast ("Cleared"). Because it lives in `ToolPage`, it will appear on Email; keep behavior generic so it doesn't harm the other tools (or gate it with a `showClear` prop defaulting to true for Email only — will default to true everywhere since it's a benign UX addition and matches the spec of "seamless restart").
+### 2. Pre-hydration script (`src/routes/__root.tsx`)
+- Add a small inline `<script>` in `RootShell`'s `<head>` that reads `localStorage.theme` and sets/removes the `dark` class on `<html>` before React renders (avoids flash).
+- Remove the hardcoded `className="dark"` on `<html>` — the script manages it.
+- Wrap the app in `<ThemeProvider>` inside `RootComponent`.
 
-### 3. Chatbot – Zero persistence + intro + polish
-Rewrite `src/routes/chat.tsx`:
-- Remove all `loadThreads` / `upsertThread` / `deleteThread` / `ChatThread` usage. Chat state lives only in React state (`useState<ChatMessage[]>`), reset on mount/navigation/refresh.
-- Remove the thread sidebar (threads list, New chat, Delete). Replace with a single conversation view.
-- On mount, seed messages with an assistant intro:  
-  "Hi there! 👋 I'm your Workmate AI assistant. I can help you draft emails, summarize text, brainstorm ideas, and more. What can I help with today?"
-- Keep Enter-to-send / Shift+Enter newline. Keep typing indicator (already present via `Loader2` "Thinking…"); refine as pink-tinted animated dots for a more conversational feel.
-- Style: user bubbles = dark surface with subtle border; assistant text = pink left accent bar / pink prose accents on dark background (per existing theme tokens).
-- Add a subtle inline note at the top of the chat: "Chat messages are not saved – this keeps your conversations private and temporary."
-- Leave `src/lib/storage.ts` chat helpers in place but unused by the route (no breaking change to other code). Do not write chat data to IndexedDB from anywhere.
+### 3. Light theme tokens (`src/styles.css`)
+- Currently `:root, .dark` share the same dark values. Split into:
+  - `:root { ... light values ... }` — white/near-white background, dark foreground, subtle gray borders, same pink primary (`--primary` stays vibrant pink), light sidebar.
+  - `.dark { ... existing black + pink values ... }` unchanged.
+- Add smooth transitions on `body` (`transition: background-color 200ms, color 200ms`).
+- Keep `@custom-variant dark (&:is(.dark *))` — already class-based.
 
-### 4. README.md
-Create `README.md` at project root with:
-- Project overview (privacy-first browser productivity assistant).
-- Features implemented (local IndexedDB output storage, Smart Email Generator with clear button, ephemeral chatbot with intro, top bar with welcome/search/privacy, black & pink theme, help panel in sidebar, optional cloud sync groundwork).
-- Tech stack (React, TypeScript, Tailwind CSS v4, TanStack Start/Router, Dexie.js/IndexedDB, Supabase via Lovable Cloud, Lovable AI Gateway).
-- Setup instructions (`git clone`, `npm install`, `npm run dev`, env note).
+### 4. Settings dialog (`src/components/settings-dialog.tsx` — new)
+- Mirrors `HelpDialog` structure/styling (shadcn `Dialog`, gear icon header, close via X + outside click already built-in).
+- Section titled **Appearance**.
+- Segmented control: two buttons (Sun / Light, Moon / Dark). Active button uses pink (`bg-primary text-primary-foreground`); inactive uses muted. Proper `role="radiogroup"`, `aria-checked`, keyboard accessible.
+- Description text: "Choose how Workmate AI looks. Your preference is saved locally."
 
-### 5. Preserved / not touched
-- Top bar (welcome, search, privacy notice), black & pink theme tokens, IndexedDB output storage for the 4 non-chat tools, existing tool routes (Notes, Planner, Research), auth modal code (kept but Help does not surface login CTA per request "No user accounts or login features anywhere in the UI" — I'll also hide the `UserMenu` from the chat header to comply; other tool headers already use `UserMenu` — please confirm whether to hide it globally).
+### 5. Sidebar entry (`src/components/app-sidebar.tsx`)
+- Add a `SettingsDialog` trigger in `SidebarFooter` above/next to the Help item, using the `Settings` (gear) lucide icon. Same pink accent styling as the Help button (`text-primary`).
 
-## Technical notes
-- No DB migration.
-- Files added: `src/components/help-dialog.tsx`, `README.md`.
-- Files edited: `src/components/app-sidebar.tsx`, `src/components/tool-page.tsx`, `src/routes/chat.tsx`.
-- Typecheck after changes.
+### 6. Verification
+- Confirm existing black+pink dark mode looks identical (unchanged `.dark` tokens).
+- Confirm light mode readable across sidebar, tool shell, modals, output panel, chat, email generator.
+- No changes to storage, chat ephemerality, email clear button, help dialog, top bar, or IndexedDB logic.
 
-## Open question
-The spec says "No user accounts or login features anywhere in the UI," but the current app has a `UserMenu` (sign-in) in every tool header for optional cloud sync. Should I remove `UserMenu` from all headers, or leave it and only ensure Help/Chat don't mention login?
+### Files
+- **New:** `src/lib/theme-context.tsx`, `src/components/settings-dialog.tsx`
+- **Edited:** `src/routes/__root.tsx`, `src/styles.css`, `src/components/app-sidebar.tsx`
