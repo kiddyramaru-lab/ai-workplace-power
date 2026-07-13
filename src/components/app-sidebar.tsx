@@ -7,6 +7,7 @@ import {
   Search,
   MessageSquare,
   HelpCircle,
+  Settings,
 } from "lucide-react";
 
 import {
@@ -22,6 +23,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { HelpDialog } from "@/components/help-dialog";
+import { SettingsDialog } from "@/components/settings-dialog";
 import workmateLogo from "@/assets/workmate-logo.png.asset.json";
 
 const items = [
@@ -76,6 +78,16 @@ export function AppSidebar() {
 
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <SettingsDialog
+              trigger={
+                <SidebarMenuButton tooltip="Settings" className="text-primary hover:text-primary">
+                  <Settings className="h-4 w-4" />
+                  <span>Settings</span>
+                </SidebarMenuButton>
+              }
+            />
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <HelpDialog
               trigger={
