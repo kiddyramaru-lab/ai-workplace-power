@@ -120,6 +120,7 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="dark">
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <HeadContent />
       </head>
       <body>
@@ -135,15 +136,16 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <Outlet />
-        </SidebarInset>
-      </SidebarProvider>
-      <Toaster position="bottom-right" richColors theme="dark" />
+      <ThemeProvider>
+        <SidebarProvider>
+          <AppSidebar />
+          <SidebarInset>
+            <Outlet />
+          </SidebarInset>
+        </SidebarProvider>
+        <Toaster position="bottom-right" richColors />
+      </ThemeProvider>
     </QueryClientProvider>
-
   );
 }
 
