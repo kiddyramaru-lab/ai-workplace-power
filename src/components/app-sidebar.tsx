@@ -7,6 +7,7 @@ import {
   Search,
   MessageSquare,
   HelpCircle,
+  Settings,
 } from "lucide-react";
 
 import {
