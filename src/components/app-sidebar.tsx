@@ -79,6 +79,16 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
+            <SettingsDialog
+              trigger={
+                <SidebarMenuButton tooltip="Settings" className="text-primary hover:text-primary">
+                  <Settings className="h-4 w-4" />
+                  <span>Settings</span>
+                </SidebarMenuButton>
+              }
+            />
+          </SidebarMenuItem>
+          <SidebarMenuItem>
             <HelpDialog
               trigger={
                 <SidebarMenuButton tooltip="Help" className="text-primary hover:text-primary">
